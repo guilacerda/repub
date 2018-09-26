@@ -1,0 +1,2 @@
+model_checkpoint_path: "/2018.2-Lino/rasa/models/nlu/default/current/intent_classifier_tensorflow_embedding.ckpt"
+all_model_checkpoint_paths: "/2018.2-Lino/rasa/models/nlu/default/current/intent_classifier_tensorflow_embedding.ckpt"
