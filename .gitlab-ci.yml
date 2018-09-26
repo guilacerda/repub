@@ -1,0 +1,33 @@
+
+stages:
+  - build
+  - deploy
+
+variables:
+  LINO_LATEST_IMAGE: $DOCKER_USER/lino:latest
+
+build lino:
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  script:
+    - docker build . -t $LINO_LATEST_IMAGE
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - docker push $LINO_LATEST_IMAGE
+  only:
+    - /master/
+    - /devel/
+  environment: production
+
+deploy to rancher:
+image: cdrx/rancher-gitlab-deploy
+stage: deploy
+script:
+- "upgrade
+        --service lino-telegram
+        --environment $RANCHER_ENVIRONMENT
+        --stack $RANCHER_STACK
+        --rancher-key $RANCHER_ACCESS_KEY
+        --rancher-secret $RANCHER_SECRET_KEY
+        --rancher-url $RANCHER_URL"
